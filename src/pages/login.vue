@@ -51,7 +51,7 @@ import { User, Lock } from "@element-plus/icons-vue";
 import { login } from "~/api/manager"
 import { ElNotification } from 'element-plus'
 import { useRouter } from 'vue-router'
-
+import { useCookies } from '@vueuse/integrations/useCookies'
 const router = useRouter()
 
 // import { FormRules } from 'element-plus'
@@ -88,7 +88,9 @@ const onSubmit = () => {
         duration:3000
       })
       // 存储token 和用户相关信息
-
+      const cookie = useCookies()
+      console.log(cookie)
+      cookie.set("admin-token", res.data.data.token)
       // 跳转到首页
       router.push("/")
     }).catch(err=>{

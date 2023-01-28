@@ -9,7 +9,7 @@ import path from "path"
 export default defineConfig({
   //src 别名 为 ~
   resolve: {
-    alias: {
+    alias: { 
       "~": path.resolve(__dirname, "src")
     }
   }

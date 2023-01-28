@@ -1,25 +1,23 @@
 <template>
     <div>
-        good {{count}}
-        <el-button @click="addCount">+1</el-button>
-        addCount2 use reactive {{form.count}}
-        <el-button @click="addCount2">+1</el-button>
+        good
+        <el-button @click="set">设置cookie</el-button>
+        <el-button @click="get">读取cookie</el-button>
+        <el-button @click="remove">删除cookie</el-button>
     </div>
 </template>
 <script setup>
-    import { ref, reactive } from "vue"
-    // 普通类型变量
-    let count = ref(1)
-    // 复杂类型变量
-    let form = reactive({
-        count:1
-    })
-    function addCount(){
-        count.value++
-        console.log("addCount")
-    }
-    function addCount2(){
-        form.count++
-        console.log("addCount2")
-    }
+ import { useCookies } from '@vueuse/integrations/useCookies'
+
+ const cookie = useCookies()
+
+function set(){
+    cookie.set("admin-token","1234")
+}
+function get(){
+    console.log(cookie.get("admin-token"))
+}
+function remove(){
+    cookie.set("admin-token")
+}
 </script>

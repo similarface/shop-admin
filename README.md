@@ -54,3 +54,10 @@ npm i -D vite-plugin-windicss windicss
 ```
 npm install vue-router@4
 ```
+
+- VueUse
+> https://vueuse.org/integrations/useCookies/
+```
+npm i @vueuse/integrations
+npm i universal-cookie
+```

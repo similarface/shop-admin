@@ -38,6 +38,11 @@ WindiCSS IntelliSense
 npm install element-plus --save
 ```
 
+- - element-plus icon
+```
+npm install @element-plus/icons-vue
+```
+
 - windi css
 > https://cn.windicss.org/integrations/vite.html
 ```

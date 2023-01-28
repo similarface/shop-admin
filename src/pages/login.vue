@@ -17,10 +17,18 @@
       </div>
       <el-form :model="form" class="w-[250px]">
         <el-form-item>
-          <el-input v-model="form.username" placeholder="请输入用户名"/>
+          <el-input v-model="form.username" placeholder="请输入用户名">
+           <template #prefix>
+            <el-icon class="el-input__icon"><user /></el-icon>
+          </template>
+          </el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.password" placeholder="请输入密码" type="password"/>
+          <el-input v-model="form.password" placeholder="请输入密码" type="password">
+            <template #prefix>
+              <el-icon class="el-input__icon"><lock /></el-icon>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit" class="w-[250px]">登录</el-button>
@@ -32,7 +40,7 @@
 
 <script setup>
 import {reactive} from 'vue'
-
+import { User,Lock } from '@element-plus/icons-vue'
 // do not use same name with ref
 const form = reactive({
   username: '',

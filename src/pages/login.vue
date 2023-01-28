@@ -36,7 +36,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit" class="w-[250px]"
+          <el-button type="primary" @click="onSubmit" class="w-[250px]" :loading="loading"
             >登录</el-button
           >
         </el-form-item>
@@ -47,13 +47,13 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { User, Lock } from "@element-plus/icons-vue";
-import { login } from "~/api/manager"
+import { User, Lock, Failed } from "@element-plus/icons-vue";
+import { login, getinfo } from "~/api/manager"
 import { ElNotification } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useCookies } from '@vueuse/integrations/useCookies'
 const router = useRouter()
-
+const loading=ref(false)
 // import { FormRules } from 'element-plus'
 
 // do not use same name with ref
@@ -78,8 +78,8 @@ const onSubmit = () => {
     if(!valid){
       return false
     }
+    loading.value = true
     login(form.username, form.password).then(res=>{
-      console.log(res.data.data)
       // 提示成功
       ElNotification({
         title: '',
@@ -90,17 +90,16 @@ const onSubmit = () => {
       // 存储token 和用户相关信息
       const cookie = useCookies()
       console.log(cookie)
-      cookie.set("admin-token", res.data.data.token)
+      cookie.set("admin-token", res.token)
+
+      // 获取用户相关信息
+      getinfo().then((res2)=>{
+        console.log(res2)
+      })
       // 跳转到首页
       router.push("/")
-    }).catch(err=>{
-      ElNotification({
-        title: '',
-        message: err.response.data.msg||"请求失败",
-        type: 'warning',
-        duration:3000
-      })
-      console.log(err.response.data.msg)
+    }).finally( ()=>{
+      loading.value=false 
     })
     console.log(valid.data)
   })

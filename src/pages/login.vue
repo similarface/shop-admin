@@ -51,7 +51,9 @@ import { User, Lock, Failed } from "@element-plus/icons-vue";
 import { login, getinfo } from "~/api/manager"
 import { ElNotification } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { useCookies } from '@vueuse/integrations/useCookies'
+// import { useCookies } from '@vueuse/integrations/useCookies'
+import { setToken } from "~/composables/auth"
+import { toast } from "~/composables/util";
 const router = useRouter()
 const loading=ref(false)
 // import { FormRules } from 'element-plus'
@@ -81,16 +83,18 @@ const onSubmit = () => {
     loading.value = true
     login(form.username, form.password).then(res=>{
       // 提示成功
-      ElNotification({
-        title: '',
-        message: "登录成功",
-        type: 'success',
-        duration:3000
-      })
+      toast("登录成功")
+      // ElNotification({
+      //   title: '',
+      //   message: "登录成功",
+      //   type: 'success',
+      //   duration:3000
+      // })
       // 存储token 和用户相关信息
-      const cookie = useCookies()
-      console.log(cookie)
-      cookie.set("admin-token", res.token)
+      // const cookie = useCookies()
+      // console.log(cookie)
+      // cookie.set("admin-token", res.token)
+      setToken(res.token)
 
       // 获取用户相关信息
       getinfo().then((res2)=>{

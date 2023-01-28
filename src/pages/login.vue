@@ -15,19 +15,20 @@
         <span>账号密码</span>
         <span class="line"></span>
       </div>
-      <el-form :model="form" class="w-[250px]">
-        <el-form-item>
+      <el-form ref="refForm" :model="form" :rules="rules" class="w-[250px]">
+        <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名">
             <template #prefix>
               <el-icon class="el-input__icon"><user /></el-icon>
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input
             v-model="form.password"
             placeholder="请输入密码"
             type="password"
+            show-password
           >
             <template #prefix>
               <el-icon class="el-input__icon"><lock /></el-icon>
@@ -45,15 +46,33 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 import { User, Lock } from "@element-plus/icons-vue";
+// import { FormRules } from 'element-plus'
+
 // do not use same name with ref
+
+const refForm = ref(null);
 const form = reactive({
   username: "",
   password: "",
 });
 
+const rules = {
+  username: [
+    { required: true, message: "用户名非空", trigger: "blur" },
+    { min: 3, max: 15, message: "Length should be 3 to 5", trigger: "blur" },
+  ],
+  password: [{ required: true, message: "密码非空", trigger: "blur" }],
+};
+
 const onSubmit = () => {
+  refForm.value.validate((valid)=>{
+    if(!valid){
+      return false
+    }
+    console.log(valid.data)
+  })
   console.log("submit!");
 };
 </script>
@@ -77,10 +96,10 @@ const onSubmit = () => {
 .right .title {
   @apply font-bold text-3xl text-gray-800;
 }
-.right>div{
+.right > div {
   @apply flex items-center justify-center my-5 text-gray-300 space-x-2;
 }
-.right .line{
+.right .line {
   @apply h-[1px] w-16 bg-gray-200;
 }
 </style>

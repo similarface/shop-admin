@@ -1,8 +1,14 @@
-import { createRouter,createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
+
+
+import Index from '~/pages/index.vue'
 
 // 定义路由
 
-const routes= []
+const routes = [
+    {path: "/", 
+    component: Index}
+]
 
 const router = createRouter({
     history: createWebHashHistory(),

@@ -1,37 +1,43 @@
 <template>
   <!--  “vh”是css中的一个相对长度单位，是相对于视窗的高度 100vh”就是指元素的高度等于当前浏览器的视窗高度，即浏览器内部的可视区域的高度大小-->
   <!--  <el-row style="min-height: 100vh;" class="bg-pink-500">-->
-  <el-row class="min-h-screen bg-indigo-500">
-    <el-col :lg="16" :md="12" class="flex items-center justify-center">
+  <el-row class="login-container">
+    <el-col :lg="16" :md="12" class="left">
       <div>
-        <div class="font-bold text-5xl text-light-50 mb-4">欢迎光临。。。</div>
-        <div class="text-gray-400 text-4xl">Vue+vite balalala</div>
+        <div>欢迎光临。。。</div>
+        <div>Vue+vite balalala</div>
       </div>
     </el-col>
-    <el-col :lg="8" :md="12" class="flex items-center justify-center flex-col bg-light-500">
-      <h2 class="font-bold tet-3xl text-gray-800">欢迎回来</h2>
-      <div class="flex items-center justify-center my-5 text-gray-300 space-x-2">
-        <span class="h-[1px] w-16 bg-gray-200"></span>
+    <el-col :lg="8" :md="12" class="right">
+      <h2 class="title">欢迎回来</h2>
+      <div>
+        <span class="line"></span>
         <span>账号密码</span>
-        <span class="h-[1px] w-16 bg-gray-200"></span>
+        <span class="line"></span>
       </div>
       <el-form :model="form" class="w-[250px]">
         <el-form-item>
           <el-input v-model="form.username" placeholder="请输入用户名">
-           <template #prefix>
-            <el-icon class="el-input__icon"><user /></el-icon>
-          </template>
+            <template #prefix>
+              <el-icon class="el-input__icon"><user /></el-icon>
+            </template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.password" placeholder="请输入密码" type="password">
+          <el-input
+            v-model="form.password"
+            placeholder="请输入密码"
+            type="password"
+          >
             <template #prefix>
               <el-icon class="el-input__icon"><lock /></el-icon>
             </template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit" class="w-[250px]">登录</el-button>
+          <el-button type="primary" @click="onSubmit" class="w-[250px]"
+            >登录</el-button
+          >
         </el-form-item>
       </el-form>
     </el-col>
@@ -39,15 +45,42 @@
 </template>
 
 <script setup>
-import {reactive} from 'vue'
-import { User,Lock } from '@element-plus/icons-vue'
+import { reactive } from "vue";
+import { User, Lock } from "@element-plus/icons-vue";
 // do not use same name with ref
 const form = reactive({
-  username: '',
-  password: '',
-})
+  username: "",
+  password: "",
+});
 
 const onSubmit = () => {
-  console.log('submit!')
-}
+  console.log("submit!");
+};
 </script>
+<style scope>
+.login-container {
+  @apply min-h-screen bg-indigo-500;
+}
+.login-container .left,
+.login-container .right {
+  @apply flex items-center justify-center;
+}
+.login-container .right {
+  @apply flex-col bg-light-500;
+}
+.left > div > div:first-child {
+  @apply font-bold text-5xl text-light-50 mb-4;
+}
+.left > div > div:last-child {
+  @apply text-gray-400 text-4xl;
+}
+.right .title {
+  @apply font-bold text-3xl text-gray-800;
+}
+.right>div{
+  @apply flex items-center justify-center my-5 text-gray-300 space-x-2;
+}
+.right .line{
+  @apply h-[1px] w-16 bg-gray-200;
+}
+</style>

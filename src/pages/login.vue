@@ -48,6 +48,12 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { User, Lock } from "@element-plus/icons-vue";
+import { login } from "~/api/manager"
+import { ElNotification } from 'element-plus'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 // import { FormRules } from 'element-plus'
 
 // do not use same name with ref
@@ -66,11 +72,34 @@ const rules = {
   password: [{ required: true, message: "密码非空", trigger: "blur" }],
 };
 
+
 const onSubmit = () => {
   refForm.value.validate((valid)=>{
     if(!valid){
       return false
     }
+    login(form.username, form.password).then(res=>{
+      console.log(res.data.data)
+      // 提示成功
+      ElNotification({
+        title: '',
+        message: "登录成功",
+        type: 'success',
+        duration:3000
+      })
+      // 存储token 和用户相关信息
+
+      // 跳转到首页
+      router.push("/")
+    }).catch(err=>{
+      ElNotification({
+        title: '',
+        message: err.response.data.msg||"请求失败",
+        type: 'warning',
+        duration:3000
+      })
+      console.log(err.response.data.msg)
+    })
     console.log(valid.data)
   })
   console.log("submit!");

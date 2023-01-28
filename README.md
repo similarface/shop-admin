@@ -33,6 +33,7 @@ WindiCSS IntelliSense
 
 ## 框架
 - element-plus
+> https://element-plus.gitee.io/zh-CN/component/button.html
 ```
 npm install element-plus --save
 ```

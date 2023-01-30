@@ -4,6 +4,7 @@
         <el-button @click="set">设置cookie</el-button>
         <el-button @click="get">读取cookie</el-button>
         <el-button @click="remove">删除cookie</el-button>
+        {{$store.state.user}}
     </div>
 </template>
 <script setup>

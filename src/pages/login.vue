@@ -54,6 +54,8 @@ import { useRouter } from 'vue-router'
 // import { useCookies } from '@vueuse/integrations/useCookies'
 import { setToken } from "~/composables/auth"
 import { toast } from "~/composables/util";
+import { useStore } from 'vuex'
+const store = useStore()
 const router = useRouter()
 const loading=ref(false)
 // import { FormRules } from 'element-plus'
@@ -98,6 +100,7 @@ const onSubmit = () => {
 
       // 获取用户相关信息
       getinfo().then((res2)=>{
+        store.commit("SET_USERINFO", res2)
         console.log(res2)
       })
       // 跳转到首页

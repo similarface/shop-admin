@@ -46,9 +46,9 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive,onMounted,onBeforeUnmount } from "vue";
 import { User, Lock, Failed } from "@element-plus/icons-vue";
-import { login, getinfo } from "~/api/manager"
+import { login } from "~/api/manager"
 import { ElNotification } from 'element-plus'
 import { useRouter } from 'vue-router'
 // import { useCookies } from '@vueuse/integrations/useCookies'
@@ -83,35 +83,28 @@ const onSubmit = () => {
       return false
     }
     loading.value = true
-    login(form.username, form.password).then(res=>{
-      // 提示成功
-      toast("登录成功")
-      // ElNotification({
-      //   title: '',
-      //   message: "登录成功",
-      //   type: 'success',
-      //   duration:3000
-      // })
-      // 存储token 和用户相关信息
-      // const cookie = useCookies()
-      // console.log(cookie)
-      // cookie.set("admin-token", res.token)
-      setToken(res.token)
-
-      // 获取用户相关信息
-      getinfo().then((res2)=>{
-        store.commit("SET_USERINFO", res2)
-        console.log(res2)
-      })
-      // 跳转到首页
+    store.dispatch("login",form).then(res=>{
+      toast("登录成功","success")
       router.push("/")
-    }).finally( ()=>{
-      loading.value=false 
-    })
-    console.log(valid.data)
+      }).finally( ()=>{
+        loading.value=false 
+      })
+    
   })
   console.log("submit!");
 };
+
+function onKeyUp(e){
+  if(e.key=="Enter") onSubmit()
+}
+onMounted(()=>{
+  document.addEventListener("keyup",onKeyUp)
+})
+onBeforeUnmount(()=>{
+  document.removeEventListener("keyup",onKeyUp)
+})
+
+
 </script>
 <style scope>
 .login-container {

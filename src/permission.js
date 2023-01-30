@@ -1,10 +1,11 @@
 import router from "~/router"
 import  { getToken } from '~/composables/auth'
 import { toast  } from './composables/util'
+import store from "./store"
 
 // 全局 前置守卫
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
     // to and from are both route objects. must call `next`.
     const token = getToken()
     // 没有登录去登录页面
@@ -18,6 +19,9 @@ router.beforeEach((to, from, next) => {
         return next({path:from.path?from.path:"/"})
     } 
 
-
+    // 如果用户登录了，自动获取用户信息，并存储在vuex当中
+    if(token){
+        await store.dispatch("getinfo")
+    }
     next()
 })

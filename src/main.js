@@ -18,4 +18,8 @@ app.use(ElementPlus)
 
 
 import 'virtual:windi.css'
+
+
+import './permission'
+
 app.mount('#app')

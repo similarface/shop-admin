@@ -67,3 +67,9 @@ npm i universal-cookie
 ```
 npm install vuex@next --save
 ```
+
+- nprogress 进度条
+> https://github.com/rstacruz/nprogress
+``` bash
+npm i nprogress
+```

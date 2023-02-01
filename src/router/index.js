@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 
 
 import Index from '~/pages/index.vue'
@@ -8,11 +8,21 @@ import NotFound from '~/pages/404.vue'
 // 定义路由
 
 const routes = [
-    {path: "/", 
-    component: Index},
-    {path: "/login",
-    component: Login},
-    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
+    {
+        path: "/",
+        component: Index,
+        meta: {
+            title: '后台首页'
+        }
+    },
+    {
+        path: "/login",
+        component: Login,
+        meta: {
+            title: '登录页'
+        }
+    },
+    {path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound},
 ]
 
 const router = createRouter({

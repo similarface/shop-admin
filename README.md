@@ -60,6 +60,7 @@ npm install vue-router@4
 ```
 npm i @vueuse/integrations
 npm i universal-cookie
+npm i @vueuse/core
 ```
 
 - Vuex

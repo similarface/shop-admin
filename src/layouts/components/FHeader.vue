@@ -39,31 +39,105 @@
                 </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="resetPassWord">修改密码</el-dropdown-item>
+            <el-dropdown-item command="resetPassWord">
+              修改密码
+            </el-dropdown-item>
             <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
   </div>
+
+
+  <el-drawer
+      ref="drawerRef"
+      v-model="dialog"
+      title="修改密码"
+      size="45%"
+      :close-on-click-modal="false">
+    <el-form  ref="formRef" :model="form" :rules="rules" label-width="80px" size="small">
+      <el-form-item prop="oldpassword" label="旧密码">
+        <el-input v-model="form.oldpassword" placeholder="请输入旧密码"></el-input>
+      </el-form-item>
+      <el-form-item prop="password" label="新密码">
+        <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+      </el-form-item>
+      <el-form-item prop="repassword" label="确认密码">
+        <el-input v-model="form.repassword" placeholder="请再次输入密码"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit" :loading="loading">提交</el-button>
+      </el-form-item>
+    </el-form>
+  </el-drawer>
 </template>
 <script setup>
-import {Fold, Refresh, ArrowDown, FullScreen,Aim} from "@element-plus/icons-vue";
+import {ref, reactive} from "vue";
+import {Fold, Refresh, ArrowDown, FullScreen, Aim, ElemeFilled} from "@element-plus/icons-vue";
 import {showModal, toast} from "~/composables/util"
 import {logout} from '~/api/manager'
 import {useRouter} from 'vue-router'
 import {useStore} from 'vuex'
-import { useFullscreen } from '@vueuse/core'
+import {useFullscreen} from '@vueuse/core'
 
+// 修改密码 显示
+const dialog = ref(false)
+const formRef = ref(null)
+const loading = ref(false)
+
+const form = reactive({
+  oldpassword: "",
+  password: "",
+  repassword: ""
+})
+const rules = {
+  oldpassword: [
+    {
+      required: true,
+      message: '旧密码不能为空',
+      trigger: 'blur'
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: '新密码不能为空',
+      trigger: 'blur'
+    },
+  ],
+  repassword: [
+    {
+      required: true,
+      message: '确认密码不能为空',
+      trigger: 'blur'
+    },
+  ]
+}
 const {
   isFullscreen, // 是否全屏
-  enter,
-  exit,
-  toggle  //切换
+  toggle  //切换全屏
 } = useFullscreen()
 
 const router = useRouter()
 const store = useStore()
+
+const  onSubmit=()=>{
+  formRef.value.validate((valid)=>{
+    if(!valid){
+      return false
+    }
+    loading.value = true
+    resetPassword(form).then(res=>{
+      toast("修改密码成功，请重新登录")
+      store.dispatch("logout")
+      // 跳转回登录页
+      router.push("/login")
+    }).finally(()=>{
+      loading.value = false
+    })
+  })
+}
 
 function handleLogout() {
   showModal("是否要退出登录").then(res => {
@@ -82,6 +156,7 @@ const handleCommand = (c) => {
       handleLogout()
       break
     case "resetPassWord":
+      dialog.value = true
       break
   }
 }

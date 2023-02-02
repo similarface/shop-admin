@@ -12,3 +12,7 @@ export function getinfo(){
 export function logout(){
     return axios.post("/admin/logout")
 }
+
+export function  resetPassword(data){
+    return axios.post("/admin/updatepassword", data)
+}

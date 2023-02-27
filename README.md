@@ -60,10 +60,17 @@ npm install vue-router@4
 ```
 npm i @vueuse/integrations
 npm i universal-cookie
+npm i @vueuse/core
 ```
 
 - Vuex
 > https://vuex.vuejs.org/installation.html#direct-download-cdn
 ```
 npm install vuex@next --save
+```
+
+- nprogress 进度条
+> https://github.com/rstacruz/nprogress
+``` bash
+npm i nprogress
 ```

@@ -38,29 +38,102 @@
       </el-dropdown>
     </div>
   </div>
+  <el-drawer v-model="showDrawer"
+             title="修改密码"
+             size="45%"
+             close-on-click-modal="false"
+  >
+    <el-form ref="refForm" :model="form" :rules="rules" >
+      <el-form-item prop="oldpassword" label="旧密码" label-width="80px" size="small">
+        <el-input v-model="form.oldpassword" placeholder="请输入旧密码">
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="password" label="新密码" label-width="80px" size="small">
+        <el-input
+            v-model="form.password"
+            placeholder="请输入密码"
+            type="password"
+            show-password
+        >
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="repassword" label="确认密码" label-width="80px" size="small">
+        <el-input
+            v-model="form.repassword"
+            placeholder="请输入确认密码"
+            type="password"
+            show-password
+        >
+        </el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit" class="w-[250px]" :loading="loading"
+        >提交</el-button
+        >
+      </el-form-item>
+    </el-form>
+  </el-drawer>
 </template>
 <script setup>
 import {Fold, Refresh, ArrowDown, FullScreen, Aim} from "@element-plus/icons-vue";
+import {ref,reactive} from 'vue'
 import {showModal, toast} from "~/composables/util"
-import {logout} from '~/api/manager'
+import {logout, updatepassword} from '~/api/manager'
 import {useRouter} from 'vue-router'
 import {useStore} from 'vuex'
 import {useFullscreen} from '@vueuse/core'
 const {isFullscreen, enter, exist, toggle} = useFullscreen()
 const router = useRouter()
 const store = useStore()
-
+// 修改密码部分
+const showDrawer=ref(false)
+const loading=ref(false)
 const handleCommand = (c) => {
   switch (c) {
     case "logout":
       handleLogout()
       break
     case "rePassword":
-      console.log("修改密码")
+      showDrawer.value = true
       break
   }
-
 }
+
+const refForm = ref(null);
+const form = reactive({
+  oldpassword: "",
+  password: "",
+  repassword: "",
+});
+
+const rules = {
+  oldpassword: [{ required: true, message: "旧密码非空", trigger: "blur" }],
+  password: [{ required: true, message: "密码非空", trigger: "blur" }],
+  repassword: [{ required: true, message: "确认密码非空", trigger: "blur" }],
+};
+
+
+const onSubmit = () => {
+  refForm.value.validate((valid)=>{
+    if(!valid){
+      return false
+    }
+    loading.value = true
+    updatepassword(form)
+        .then(res=>{
+          toast("修改密码成功，请重新登录")
+          store.dispatch("logout")
+          router.push("/login")
+        })
+        .finally(()=>{
+          loading.value=false
+        })
+  })
+};
+
+
+
+
 
 // 刷新
 const handleRefresh = () => location.reload()

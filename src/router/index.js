@@ -5,18 +5,26 @@ import Index from '~/pages/index.vue'
 import Login from '~/pages/login.vue'
 import NotFound from '~/pages/404.vue'
 import Base from '~/layouts/base.vue'
+import GoodList from "~/pages/goods/list.vue"
 // 定义路由
 
 const routes = [
     {
         path: "/",
         component: Base,
-        children:[
+        children: [
             {
-                path:"/",
-                component:Index,
-                media:{
-                    title:"后台首页"
+                path: "/",
+                component: Index,
+                meta: {
+                    title: "后台首页"
+                }
+            },
+            {
+                path: "/goods/list",
+                component: GoodList,
+                meta: {
+                    title: "商品管理"
                 }
             }
         ]
